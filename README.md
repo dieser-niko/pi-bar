@@ -1,22 +1,22 @@
 # pi-bar
-The Pi-Bar is a script, which includes a GUI and the ability to use pumps.
-The idea behind this is a coffee maker-like machine but for cocktails.
+The Pi-Bar is a Raspberry Pi powered bartender. 
+With some pumps it is able to mix drinks in the right ratio.
 
 ## How to configure
 
 ### The main folder is `drinks`
 
-Categories and drinks are being stored just as folders and files.
-To create a category, just create a folder, for drinks, create text files.
+Categories and drinks are stored just like folders and files.
+To create a category simply create a folder, for drinks create text files.
 
-But of course there are some exceptions. To configure the drinks and configurations, you also have to use files.
-The namings of those files are: 
-- `preview.txt`: is being used to configure the categories. The file has to be in the category which you want to configure.
-- `drinks.txt`: is being used to configure which drinks is on which pump. This file is just in the main folder.
+However, there are some exceptions for the files. To be able to configure categories and drinks you also need files
+The names of these files are: 
+- `preview.txt`: is used to configure the categories. The file has to be in the category which you want to configure.
+- `drinks.txt`: is used to configure which drink is on which pump. This file is just in the main folder.
 
 There are also some other special files:
 - `background.png`: if detected, this will be your background. This file has to be in the main folder
-- `<your_drink>.txt`: contains all the info to create the drink aswell some config. Can be anywhere
+- `<your_drink>.txt`: contains all the info to create the drink as well as some config. Can be anywhere
 - `<your_drink>.png`: the name of the file has to be the same as the name of the .txt file of your drink. But more on that later
 - `preview.png`: if detected, this will be the icon of the category the file is in
 
@@ -108,5 +108,5 @@ If you want to add an icon to the drink, just create a .png file. The name of th
 
 
 ## How to use the GUI
-Since the development is not done yet, the details can change.
-I won't make any updates to this file until everything is done.
+Since the development is not done yet, the details might be wrong.
+Also there's nothing here yet.
