@@ -89,7 +89,7 @@ Vodka Bull
 shown
 
 50 Red Bull
-1 warten
+1 wait
 10 Vodka
 ```
 
@@ -99,10 +99,10 @@ Here is a list of all them with explanation.
 
 Command    | Description                                       | Example      | Explanation
 ---        | ---                                               | ---          | ---
-`warten`   | waits the specified amount of time in seconds     | `2 warten`   | waits 2 seconsd
-`abwarten` | waits for the last x amount of commands to finish | `3 abwarten` | waits until the last three other commands (includes `warten`) are finished
+`wait`   | waits the specified amount of time in seconds     | `2 wait`   | waits 2 seconsd
+`await` | waits for the last x amount of commands to finish | `3 await` | waits until the last three other commands (includes `wait`) are finished
 
-In the example above I didn't use `abwarten`, but I hope this explains it.
+In the example above I didn't use `await`, but I hope this explains it.
 
 If you want to add an icon to the drink, just create a .png file. The name of that file should be the same as the .txt file.
 
