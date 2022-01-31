@@ -2,7 +2,7 @@ import os
 from ast import literal_eval
 import exceptions
 
-keywords = ("warten", "abwarten")
+keywords = ("wait", "await")
 
 
 def walk(path="./"):
