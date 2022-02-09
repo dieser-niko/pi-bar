@@ -99,7 +99,7 @@ Here is a list of all them with explanation.
 
 Command    | Description                                       | Example      | Explanation
 ---        | ---                                               | ---          | ---
-`wait`   | waits the specified amount of time in seconds     | `2 wait`   | waits 2 seconsd
+`wait`   | waits the specified amount of time in seconds     | `2 wait`   | waits 2 seconds
 `await` | waits for the last x amount of commands to finish | `3 await` | waits until the last three other commands (includes `wait`) are finished
 
 In the example above I didn't use `await`, but I hope this explains it.
