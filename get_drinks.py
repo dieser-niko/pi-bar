@@ -35,7 +35,7 @@ def get(main_folder="./drinks"):
         raise exceptions.DrinkReadError
     drinks = process_drink_config(file)
     try:
-        result = {"items": Category(**import_infos(items, main_folder)).export(drinks), "drinks": drinks}
+        result = {"items": Category(**import_infos(items, main_folder)).export(drinks)["items"], "drinks": drinks}
     except:
         raise exceptions.ExportError
     return result
@@ -44,18 +44,18 @@ def get(main_folder="./drinks"):
 def import_cat_config(path):
     with open(path, "r", encoding="utf-8") as fobj:
         process = fobj.read().split("\n")
-    return {"name": process[0], "text": (process[1] != "hidden"), "order": literal_eval(process[2])}
+    return {"name": process[0], "text": (process[1] != "hidden"), "order": (literal_eval(process[2]) if len(process) > 2 and process[2] else None)}
 
 
 def import_drink_config(path):
     with open(path, "r", encoding="utf-8") as fobj:
         process = fobj.read().split("\n")
-    return {"name": process[0], "text": (process[1] == "shown"), "order": literal_eval(process[2]),
+    return {"name": process[0], "text": (process[1] != "hidden"), "order": (literal_eval(process[2]) if len(process) > 2 and process[2] else None),
             "config": process_drink_config(process[3:])}
 
 
 def process_drink_config(config) -> dict:
-    return {" ".join(x.split(" ")[1:]): x.split(" ")[0] for x in config}
+    return {" ".join(x.split(" ")[1:]): x.split(" ")[0] for x in config if x}
 
 
 def import_infos(items, path):
@@ -64,7 +64,7 @@ def import_infos(items, path):
     # first, all the folders are being converted to classes, then added to the "items" list.
     for item in items[0]:
         result["items"].append(
-            Category(**{**{"name": item}, **import_infos(items[0][item], os.path.join(path, item))}))
+            Category(**{**{"filename": item, "name": item}, **import_infos(items[0][item], os.path.join(path, item))}))
 
     # then all files are getting processed
     for item in items[1]:
@@ -82,12 +82,14 @@ def import_infos(items, path):
                 preview = ""
 
             # {**{[...]}, **{[...]}} this is a way to merge two dictionaries together.
-            result["items"].append(Drink(**{"preview": preview}, **import_drink_config(os.path.join(path, item))))
+            result["items"].append(Drink(**{"filename": ".".join(item.split(".")[:-1]), 
+                                            "preview": preview}, **import_drink_config(os.path.join(path, item))))
     return result
 
 
 class Item:
-    def __init__(self, name, preview, order, text):
+    def __init__(self, filename, name, preview, order, text):
+        self.filename = filename
         self.name = name
         self.preview = preview
         self.order = order
@@ -95,8 +97,8 @@ class Item:
 
 
 class Category(Item):
-    def __init__(self, name="", preview="", order=None, text=True, items=None):
-        super().__init__(name, preview, order, text)
+    def __init__(self, filename=None, name="", preview=None, order=None, text=True, items=None):
+        super().__init__(filename, name, preview, order, text)
 
         self.items = list() if items is None else items
 
@@ -113,24 +115,26 @@ class Category(Item):
         """
         export = [x.export(drinks) for x in self.items]
         if any(export):
-            return {"name": self.name,
+            return {"filename": self.filename,
+                    "name": self.name if self.text else None,
                     "preview": self.preview,
                     "order": self.order,
-                    "text": self.text,
                     "items": sorted((x for x in export if x and x["order"] is not None), key=lambda a: a["order"]) + \
                              sorted((x for x in export if x and x["order"] is None), key=lambda a: a["name"])}
 
 
 class Drink(Item):
-    def __init__(self, name="", preview="", config="", order=None, text=True):
-        super().__init__(name, preview, order, text)
+    def __init__(self, filename=None, name="", preview=None, config="", order=None, text=True):
+        super().__init__(filename, name, preview, order, text)
         self.config = config
 
     def export(self, drinks):
         if all([any([x == y or y in keywords for x in drinks]) for y in self.config]):
-            return {"name": self.name,
+            return {"filename": self.filename,
+                    "name": self.name if self.text else None,
                     "preview": self.preview,
                     "config": self.config,
-                    "order": self.order,
-                    "text": self.text}
+                    "order": self.order}
 
+if __name__ == "__main__":
+    print(get())
